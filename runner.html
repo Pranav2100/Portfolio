@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Endless Rush — Pranav Jagtap</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzBlMGYxNCIvPjxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgcng9IjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2U4Yjg2ZCIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48dGV4dCB4PSIxNiIgeT0iMjIiIGZvbnQtZmFtaWx5PSJBcmlhbCBCbGFjayxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjZThiODZkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iLTEiPlBKPC90ZXh0Pjwvc3ZnPg=="/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0e0f14; --bg2: #13141a; --card: #181920;
+    --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.12);
+    --gold: #e8b86d; --gold2: #f5d08a; --sage: #7eb8a0;
+    --rose: #c97b8a; --text: #f0efe8; --muted: #7a7a8a; --muted2: #a0a0b0;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; cursor: none; }
+
+  /* CURSOR */
+  .cursor-dot {
+    width: 8px; height: 8px; background: var(--gold); border-radius: 50%;
+    position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%); transition: width 0.2s, height 0.2s, opacity 0.2s;
+  }
+  .cursor-ring {
+    width: 40px; height: 40px; border: 1.5px solid rgba(232,184,109,0.4);
+    border-radius: 50%; position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9998; transform: translate(-50%,-50%);
+    transition: border-color 0.3s;
+  }
+  a, button { cursor: none; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 500;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.4rem 4rem;
+    background: rgba(14,15,20,0.85); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 800;
+    color: var(--text); text-decoration: none; letter-spacing: 0.05em;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-back {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-size: 0.82rem; color: var(--muted2); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-back:hover { color: var(--gold); }
+  .nav-back::before { content: '←'; font-size: 1rem; }
+
+  /* HERO */
+  .project-hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 0 5rem 5rem;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background: 
+      linear-gradient(to right, rgba(14,15,20,0.85) 0%, rgba(14,15,20,0.4) 45%, rgba(14,15,20,0.15) 100%),
+      linear-gradient(to bottom, rgba(14,15,20,0.1) 0%, rgba(14,15,20,0.98) 100%);
+  }
+  .hero-thumb {
+    position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(135deg, #0a0f1a 0%, #0e0f20 50%, #1a100a 100%);
+    filter: brightness(0.55) saturate(0.9);
+  }
+  .hero-thumb::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 75%;
+    height: 100%;
+    background: linear-gradient(135deg, #0a0f1a 0%, #0e1020 40%, #1a0e0a 100%);
+    filter: brightness(0.55) saturate(0.9);
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 820px; }
+  .hero-eyebrow {
+    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .hero-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--gold); }
+  .project-hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 800; line-height: 1; letter-spacing: -0.03em;
+    margin-bottom: 1.5rem; color: var(--text);
+  }
+  .project-hero h1 em { font-style: normal; color: var(--gold); }
+  .hero-meta {
+    display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2.5rem;
+  }
+  .meta-item { display: flex; flex-direction: column; gap: 0.3rem; }
+  .meta-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+  .meta-val { font-size: 0.9rem; font-weight: 500; color: var(--text); }
+  .hero-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .tag {
+    font-size: 0.65rem; letter-spacing: 0.06em; padding: 0.28rem 0.8rem;
+    border-radius: 100px; text-transform: uppercase;
+    background: rgba(255,255,255,0.06); color: var(--muted2); border: 1px solid var(--border);
+  }
+  .tg { background: rgba(232,184,109,0.1); color: var(--gold); border-color: rgba(232,184,109,0.25); }
+  .ts { background: rgba(126,184,160,0.1); color: var(--sage); border-color: rgba(126,184,160,0.25); }
+  .tr { background: rgba(201,123,138,0.1); color: var(--rose); border-color: rgba(201,123,138,0.25); }
+
+  /* CONTENT */
+  .project-body { max-width: 1100px; margin: 0 auto; padding: 6rem 4rem; }
+
+  /* VIDEO */
+  .video-section { margin-bottom: 6rem; }
+  .video-wrap {
+    position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+    border-radius: 16px; border: 1px solid var(--border);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  }
+  .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; border-radius: 16px; }
+
+  /* TWO COL */
+  .two-col { display: grid; grid-template-columns: 1.4fr 0.6fr; gap: 5rem; margin-bottom: 6rem; align-items: start; }
+  .section-label {
+    font-size: 0.68rem; font-weight: 500; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 700;
+    color: var(--text); margin-bottom: 1.5rem; line-height: 1.2;
+  }
+  .body-text p {
+    font-size: 1rem; font-weight: 300; color: var(--muted2);
+    line-height: 1.9; margin-bottom: 1.2rem;
+  }
+  .body-text p strong { color: var(--text); font-weight: 500; }
+
+  /* DETAILS SIDEBAR */
+  .details-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 2rem; position: sticky; top: 7rem;
+  }
+  .detail-row {
+    padding: 1rem 0; border-bottom: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 0.3rem;
+  }
+  .detail-row:first-child { padding-top: 0; }
+  .detail-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .detail-key { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+  .detail-val { font-size: 0.9rem; font-weight: 500; color: var(--text); }
+
+  /* FEATURES */
+  .features-section { margin-bottom: 6rem; }
+  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+  .feature-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.8rem;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .feature-card:hover { border-color: rgba(232,184,109,0.2); transform: translateY(-4px); }
+  .feature-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: rgba(232,184,109,0.08); border: 1px solid rgba(232,184,109,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; margin-bottom: 1rem;
+  }
+  .feature-card h4 {
+    font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700;
+    color: var(--text); margin-bottom: 0.5rem;
+  }
+  .feature-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.7; font-weight: 300; }
+
+  /* CTA */
+  .cta-section {
+    background: var(--card); border: 1px solid var(--border); border-radius: 20px;
+    padding: 4rem; text-align: center; margin-bottom: 4rem;
+    position: relative; overflow: hidden;
+  }
+  .cta-section::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .cta-section h3 {
+    font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 700;
+    color: var(--text); margin-bottom: 1rem;
+  }
+  .cta-section p { font-size: 1rem; color: var(--muted2); margin-bottom: 2.5rem; font-weight: 300; }
+  .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-fill {
+    font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500;
+    letter-spacing: 0.04em; padding: 0.9rem 2.2rem;
+    background: var(--gold); color: #0e0f14;
+    border: none; border-radius: 100px; text-decoration: none;
+    transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+  }
+  .btn-fill:hover { background: var(--gold2); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(232,184,109,0.25); }
+  .btn-outline {
+    font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500;
+    letter-spacing: 0.04em; padding: 0.9rem 2.2rem;
+    background: transparent; color: var(--text);
+    border: 1px solid var(--border2); border-radius: 100px; text-decoration: none;
+    transition: border-color 0.25s, background 0.25s, transform 0.2s;
+  }
+  .btn-outline:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.04); transform: translateY(-2px); }
+
+  /* NEXT PROJECT NAV */
+  .project-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 2rem 0; border-top: 1px solid var(--border);
+  }
+  .project-nav a {
+    display: flex; flex-direction: column; gap: 0.3rem; text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .project-nav a:hover { opacity: 0.7; }
+  .nav-hint { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+  .nav-name { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--text); }
+
+  /* REVEAL */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  footer {
+    padding: 2rem 4rem; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  footer p { font-size: 0.78rem; color: var(--muted); }
+  footer span { color: var(--gold); }
+
+  @media (max-width: 860px) {
+    nav { padding: 1rem 1.5rem; }
+    .project-hero { padding: 0 1.5rem 4rem; }
+    .project-body { padding: 4rem 1.5rem; }
+    .two-col { grid-template-columns: 1fr; gap: 3rem; }
+    .features-grid { grid-template-columns: 1fr; }
+    .details-card { position: static; }
+    footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a class="nav-logo" href="pranav-jagtap-portfolio.html">Pranav<span>.</span></a>
+  <a class="nav-back" href="pranav-jagtap-portfolio.html#projects">All Projects</a>
+</nav>
+
+<!-- HERO -->
+<div class="project-hero">
+  <div class="hero-thumb"></div>
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">PC Game · 2025</div>
+    <h1>Endless <em>Rush</em></h1>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <span class="meta-label">Engine</span>
+        <span class="meta-val">Unreal</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Genre</span>
+        <span class="meta-val">3D Adventure & Exploration</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Role</span>
+        <span class="meta-val">Solo Developer</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Year</span>
+        <span class="meta-val">2025</span>
+      </div>
+    </div>
+    <div class="hero-tags">
+      <span class="tag tg">Unreal Engine 5</span>
+      <span class="tag tr">Blueprint Scripting</span>
+      <span class="tag ts">3D Asset Integration</span>
+      <span class="tag tg">Sound Design</span>
+      <span class="tag tg">Lighting & VFX</span>
+      <span class="tag ts">Level Design</span>
+    </div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="project-body">
+
+  <!-- VIDEO -->
+  <div class="video-section reveal">
+    <div style="aspect-ratio:16/9; border-radius:16px; border:1px solid var(--border); background:linear-gradient(135deg,#0a0f1a,#0e1020,#1a0e0a); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1rem; box-shadow:0 30px 80px rgba(0,0,0,0.5);">
+      <div style="font-size:3rem; opacity:0.3;">🏃</div>
+      <p style="font-family:'Syne',sans-serif; font-size:0.85rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted);">Gameplay Video Coming Soon</p>
+      <p style="font-size:0.78rem; color:var(--muted); font-weight:300;">Add your video or screenshots here</p>
+    </div>
+  </div>
+
+  <!-- OVERVIEW + DETAILS -->
+  <div class="two-col reveal">
+    <div class="body-text">
+      <div class="section-label">Overview</div>
+      <h2 class="section-title">Run. Dodge. Survive. Repeat.</h2>
+      <p>
+        Endless Rush is a <strong>fast-paced 3D endless runner</strong> built in Unity — inspired by games like Subway Surfers. Players sprint through procedurally generated environments, dodging obstacles, collecting coins, and chasing high scores as the speed relentlessly climbs.
+      </p>
+      <p>
+        The game features <strong>lane-switching mechanics, obstacle variety, power-ups, and an escalating difficulty curve</strong> that keeps every run feeling fresh and challenging. Clean controls and satisfying feedback make it easy to pick up and impossible to put down.
+      </p>
+      <div class="section-label" style="margin-top:2rem;">Development Process</div>
+      <p style="margin-top:0.8rem;">
+        Built in Unity using C# — the game uses an <strong>object pooling system</strong> for performance, procedural track generation for infinite variety, and a modular obstacle system that allows new challenges to be added quickly.
+      </p>
+    </div>
+    <div class="details-card">
+      <div class="detail-row">
+        <span class="detail-key">Engine</span>
+        <span class="detail-val">Unreal Engine 5</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-key">Scripting</span>
+        <span class="detail-val">C# Scripting</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-key">Genre</span>
+        <span class="detail-val">Endless Runner / Arcade</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-key">Platform</span>
+        <span class="detail-val">PC &amp; Mobile</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-key">Duration</span>
+        <span class="detail-val">Solo Project</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-key">Year</span>
+        <span class="detail-val">2025</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-key">Status</span>
+        <span class="detail-val" style="color: var(--sage);">Completed</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="features-section reveal">
+    <div class="section-label">What I Built</div>
+    <h2 class="section-title">Key Features & Systems</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🏛</div>
+        <h4>Level Design</h4>
+        <p>Hand-crafted temple environments with layered traps, secret passages, and progression pacing designed to keep players engaged.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧩</div>
+        <h4>Puzzle Mechanics</h4>
+        <p>Interactive puzzles using Blueprint scripting — pressure plates, movable objects, and environmental triggers woven into the level layout.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💡</div>
+        <h4>Lighting & Atmosphere</h4>
+        <p>UE5 Lumen-powered dynamic lighting with torches, god rays, and shadow play to create a moody, cinematic atmosphere throughout.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+        <h4>3D Asset Integration</h4>
+        <p>Sourced and integrated high-quality 3D assets — optimised for performance while maintaining visual fidelity across the entire game world.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔊</div>
+        <h4>Sound Design</h4>
+        <p>Ambient soundscapes, triggered audio cues, and reactive sound effects that reinforce exploration and add tension to trap sequences.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚙️</div>
+        <h4>Blueprint Scripting</h4>
+        <p>All game logic built using UE5 Blueprint — from character movement and camera control to interactive objects and game state management.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section reveal">
+    <h3>Play Endless Rush</h3>
+    <p>Add your download link or screenshots here to let people try the game.</p>
+    <div class="cta-btns">
+<a href="pranav-jagtap-portfolio.html#contact" class="btn-fill">Get in Touch</a>
+      <a href="pranav-jagtap-portfolio.html#projects" class="btn-outline">← All Projects</a>
+    </div>
+  </div>
+
+  <!-- PROJECT NAV -->
+  <div class="project-nav">
+    <a href="pranav-jagtap-portfolio.html#projects">
+      <span class="nav-hint">← Back to</span>
+      <span class="nav-name">All Projects</span>
+    </a>
+    <a href="pranav-jagtap-portfolio.html#contact" style="text-align:right;">
+      <span class="nav-hint">Let's work together →</span>
+      <span class="nav-name">Get in Touch</span>
+    </a>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2026 <span>Pranav Jagtap</span>. All rights reserved.</p>
+  <p>Game Developer · Pune, India</p>
+</footer>
+
+<script>
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  let mx=0, my=0, rx=0, ry=0;
+  document.addEventListener('mousemove', e => {
+    mx=e.clientX; my=e.clientY;
+    dot.style.left=mx+'px'; dot.style.top=my+'px';
+  });
+  (function animRing() {
+    rx+=(mx-rx)*0.1; ry+=(my-ry)*0.1;
+    ring.style.left=rx+'px'; ring.style.top=ry+'px';
+    requestAnimationFrame(animRing);
+  })();
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      dot.style.width='16px'; dot.style.height='16px'; dot.style.opacity='0.6';
+      ring.style.borderColor='rgba(232,184,109,0.7)';
+    });
+    el.addEventListener('mouseleave', () => {
+      dot.style.width='8px'; dot.style.height='8px'; dot.style.opacity='1';
+      ring.style.borderColor='rgba(232,184,109,0.4)';
+    });
+  });
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 100);
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
