@@ -396,17 +396,108 @@
   a[href="maya.html"]:hover .pcard.wide img {
     opacity: 1 !important;
   }
-  @media (max-width: 860px) {
-    nav { padding: 1rem 1.5rem; }
-    .nav-links { gap: 1.2rem; }
-    section { padding: 5rem 1.5rem; }
-    #hero { padding: 5rem 1.5rem 3rem; }
-    #hero .hero-content { max-width: 100%; padding-top: 2rem; }
-    .stat-bar { gap: 1.5rem; }
-    .about-grid, .cwrap { grid-template-columns: 1fr; gap: 3rem; }
+  /* ── TABLET (max 1024px) ── */
+  @media (max-width: 1024px) {
+    nav { padding: 1.2rem 2rem; }
+    #hero { padding: 0 2.5rem; }
+    #hero .hero-content { max-width: 60%; }
+    section { padding: 6rem 2.5rem; }
+    .about-grid { gap: 3rem; }
+    .proc-grid { grid-template-columns: repeat(3, 1fr); }
+    .pcard.wide { padding: 2rem; }
+    .pgrid { grid-template-columns: repeat(2, 1fr); }
+    .pgrid > a[href="maya.html"] { grid-column: 1 / -1; }
+    .cwrap { gap: 3rem; }
+  }
+
+  /* ── MOBILE (max 768px) ── */
+  @media (max-width: 768px) {
+    /* Disable cursor on touch */
+    body { cursor: auto !important; }
+    .cursor-dot, .cursor-ring { display: none !important; }
+    a, button, .pcard, .skill-row { cursor: pointer !important; }
+
+    /* Nav - hamburger style compact */
+    nav {
+      padding: 1rem 1.2rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .nav-links {
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .nav-links a { font-size: 0.75rem; }
+
+    /* Hero */
+    #hero {
+      padding: 0 1.2rem;
+      padding-top: 5rem;
+      min-height: 100vh;
+      justify-content: center;
+    }
+    #hero .hero-content {
+      max-width: 100%;
+      padding-top: 1rem;
+      padding-bottom: 3rem;
+    }
+    h1.hero-name {
+      font-size: clamp(3rem, 15vw, 4.5rem);
+    }
+    .hero-desc { font-size: 0.95rem; max-width: 100%; }
+    .hero-btns { flex-direction: column; gap: 0.8rem; }
+    .btn-fill, .btn-outline { width: 100%; text-align: center; padding: 1rem; }
+    .stat-bar { gap: 1.5rem; margin-top: 2rem; padding-top: 1.5rem; }
+    .stat-num { font-size: 1.8rem; }
+
+    /* Canvas - reduce opacity on mobile so text is clear */
+    .hero-photo-wrap canvas { opacity: 0.4; }
+
+    /* Sections */
+    section { padding: 4rem 1.2rem; }
+    h2.stitle { font-size: clamp(1.8rem, 7vw, 2.5rem); margin-bottom: 2.5rem; }
+
+    /* About */
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+
+    /* Projects grid - single column on mobile */
+    .pgrid { grid-template-columns: 1fr; gap: 1.2rem; }
+    .pgrid > a { grid-column: 1 / -1 !important; }
+    .pcard.wide {
+      grid-column: 1 / -1;
+      grid-template-columns: 1fr !important;
+      gap: 1.5rem;
+      padding: 1.5rem;
+    }
+    .pvisual { aspect-ratio: 16/9; }
+
+    /* Process */
     .proc-grid { grid-template-columns: 1fr 1fr; }
-    .pcard.wide { grid-template-columns: 1fr; }
-    footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+    .proc-cell { padding: 1.5rem 1.2rem; }
+    .proc-num { font-size: 1.8rem; }
+
+    /* Contact */
+    .cwrap { grid-template-columns: 1fr; gap: 2.5rem; }
+
+    /* Footer */
+    footer {
+      padding: 1.5rem 1.2rem;
+      flex-direction: column;
+      gap: 0.5rem;
+      text-align: center;
+    }
+  }
+
+  /* ── SMALL MOBILE (max 480px) ── */
+  @media (max-width: 480px) {
+    nav { padding: 0.8rem 1rem; }
+    .nav-links { gap: 0.7rem; }
+    .nav-links a { font-size: 0.68rem; }
+    h1.hero-name { font-size: clamp(2.8rem, 16vw, 3.5rem); }
+    .stat-bar { gap: 1rem; }
+    .stat-num { font-size: 1.6rem; }
+    .proc-grid { grid-template-columns: 1fr; }
+    .btn-fill, .btn-outline { font-size: 0.82rem; }
   }
   /* CURSOR */
   .cursor-dot {
@@ -620,7 +711,7 @@
       <h3 style="color:var(--text);">Endless Rush</h3>
       <p>A fast-paced endless runner inspired by Subway Surfers — featuring lane-switching mechanics, obstacle systems, power-ups, and an escalating difficulty curve built in Unity.</p>
       <div class="ptags" style="margin-bottom:1.2rem;">
-        <span class="tag tg">Unreal</span>
+        <span class="tag tg">Unity</span>
         <span class="tag ts">Endless Runner</span>
         <span class="tag tg">C#</span>
       </div>
