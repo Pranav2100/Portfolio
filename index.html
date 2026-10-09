@@ -4,6 +4,13 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Pranav Jagtap | Game Developer</title>
+<meta name="description" content="Game Developer building gameplay systems and AI-driven interactions in Unreal Engine 5. Explore my games, trailers and playable builds."/>
+<meta property="og:site_name" content="Pranav Jagtap"/>
+<meta property="og:title" content="Pranav Jagtap | Game Developer"/>
+<meta property="og:description" content="Game Developer building gameplay systems and AI-driven interactions in Unreal Engine 5. Explore my games, trailers and playable builds."/>
+<meta property="og:url" content="https://pranavjagtap.vercel.app"/>
+<meta property="og:type" content="website"/>
+<meta name="twitter:card" content="summary"/>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzBlMGYxNCIvPjxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgcng9IjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2U4Yjg2ZCIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48dGV4dCB4PSIxNiIgeT0iMjIiIGZvbnQtZmFtaWx5PSJBcmlhbCBCbGFjayxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjZThiODZkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iLTEiPlBKPC90ZXh0Pjwvc3ZnPg=="/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
 <style>
@@ -37,6 +44,7 @@
     display: flex; justify-content: space-between; align-items: center;
     padding: 1.4rem 4rem;
     background: rgba(14,15,20,0.8);
+    -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
   }
@@ -535,6 +543,37 @@
     display: block;
     transform: translateZ(0);
   }
+
+  /* EXPERIENCE */
+  #experience { border-top: 1px solid var(--border); }
+  .timeline { margin-top: 3rem; display: flex; flex-direction: column; }
+  .tl-item { display: grid; grid-template-columns: 200px 1fr; gap: 2rem; padding: 2rem 0; border-bottom: 1px solid var(--border); }
+  .tl-item:first-child { padding-top: 0; }
+  .tl-item:last-child { border-bottom: none; }
+  .tl-date { font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); }
+  .tl-role { font-family: 'Syne', sans-serif; font-size: 1.15rem; font-weight: 700; letter-spacing: -0.01em; }
+  .tl-org { color: var(--muted2); font-size: 0.88rem; margin: 0.25rem 0 0.9rem; }
+  .tl-body ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+  .tl-body li { position: relative; padding-left: 1.1rem; color: var(--muted2); font-size: 0.9rem; line-height: 1.7; }
+  .tl-body li::before { content: ''; position: absolute; left: 0; top: 0.75em; width: 6px; height: 1px; background: var(--gold); }
+
+  /* MOBILE MENU */
+  .nav-toggle { display: none; background: none; border: 1px solid var(--border2); border-radius: 6px; width: 42px; height: 42px; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; }
+  .nav-toggle span { width: 18px; height: 2px; background: var(--text); transition: transform 0.25s, opacity 0.25s; }
+  nav.open .nav-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  nav.open .nav-toggle span:nth-child(2) { opacity: 0; }
+  nav.open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  @media (max-width: 900px) { .tl-item { grid-template-columns: 1fr; gap: 0.4rem; } }
+  @media (max-width: 768px) {
+    nav { flex-wrap: nowrap; }
+    .nav-toggle { display: flex; }
+    .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: flex-start; gap: 0; flex-wrap: nowrap; padding: 0.5rem 1.2rem 1.2rem; background: #0e0f14; border-bottom: 1px solid var(--border); }
+    nav.open .nav-links { display: flex; }
+    .nav-links li { width: 100%; }
+    .nav-links a { display: block; padding: 0.9rem 0; font-size: 1rem; }
+    .nav-links li:last-child a { display: inline-block; padding: 0.55rem 1.2rem; margin-top: 0.5rem; }
+  }
+  @media (max-width: 480px) { .nav-links a { font-size: 1rem; } .nav-links li:last-child a { font-size: 0.9rem; } }
 </style>
 </head>
 <body>
@@ -542,15 +581,17 @@
 <div class="cursor-dot" id="cursorDot"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
-<nav>
+<nav id="nav">
   <a class="nav-logo" href="#">Pranav<span>.</span></a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
-    <li><a href="#projects">Work</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
     <li><a href="#process">Process</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="Pranav_Jagtap_Resume.pdf" data-resume target="_blank" rel="noopener noreferrer" style="color:var(--gold); border:1px solid rgba(232,184,109,0.35); padding:0.45rem 1rem; border-radius:6px; font-size:0.78rem; transition:background 0.2s;">Resume ↓</a></li>
   </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
 </nav>
 
 <section id="hero">
@@ -579,8 +620,8 @@
         <div class="stat-label">Game Jams</div>
       </div>
       <div class="stat-item">
-        <div class="stat-num">3<span>+</span></div>
-        <div class="stat-label">Yrs Exp</div>
+        <div class="stat-num">1<span>+</span></div>
+        <div class="stat-label">Yr Professional</div>
       </div>
     </div>
   </div>
@@ -635,8 +676,52 @@
   </div>
 </section>
 
+<section id="experience">
+  <div class="eyebrow">Experience</div>
+  <h2 class="stitle">Where I've<br><em>Worked</em></h2>
+  <div class="timeline reveal">
+    <div class="tl-item">
+      <div class="tl-date">Jan 2026 &ndash; Present</div>
+      <div class="tl-body">
+        <div class="tl-role">Software Engineer Intern (Backend and Data Systems)</div>
+        <div class="tl-org">Sharelog Techguide Pvt. Ltd. &middot; Pune, India</div>
+        <ul>
+          <li>Developed Python-based backend systems and data pipelines, improving data processing efficiency by 20%.</li>
+          <li>Applied structured debugging and optimisation techniques to improve system performance and reliability.</li>
+          <li>Worked with real-time data systems supporting analytics workflows and monitoring.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Oct 2024 &ndash; Oct 2025</div>
+      <div class="tl-body">
+        <div class="tl-role">Game Developer (Collaboration)</div>
+        <div class="tl-org">SKY3D Studio &middot; Mumbai, India</div>
+        <ul>
+          <li>Developed a playable game in Unreal Engine 5 Blueprints with 15+ modular gameplay systems, including input handling, interaction logic, state-based mechanics and event sequencing.</li>
+          <li>Designed event-driven gameplay architecture that improved system stability and reduced interaction bugs by 30%.</li>
+          <li>Built AI-driven trigger and behaviour systems modelling dynamic, reactive responses to player actions.</li>
+          <li>Collaborated with designers and engineers in a professional studio pipeline, contributing to sprint planning, system reviews and iterative delivery.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Aug 2023 &ndash; Apr 2024</div>
+      <div class="tl-body">
+        <div class="tl-role">Software Engineer Intern</div>
+        <div class="tl-org">SKY3D Studio &middot; Mumbai, India</div>
+        <ul>
+          <li>Maintained backend services for a production website with 10+ service pages, ensuring 99.9% uptime.</li>
+          <li>Implemented backend request handling pipelines processing 1,000+ monthly user enquiries.</li>
+          <li>Collaborated with stakeholders to resolve 50+ technical issues and deliver features within 2-week Agile cycles.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="projects">
-  <div class="eyebrow">Work</div>
+  <div class="eyebrow">Projects</div>
   <h2 class="stitle">Projects that<br><em>Define the Work</em></h2>
   <div class="pgrid">
     <a href="maya.html" style="text-decoration:none; grid-column:1/-1; display:block; grid-column: 1/-1;">
@@ -1116,6 +1201,20 @@
       feedback.textContent = 'Something went wrong. Please try again or email directly.';
     });
   });
+</script>
+<script>
+  const navEl = document.getElementById('nav');
+  const navToggle = document.getElementById('navToggle');
+  if (navEl && navToggle) {
+    navToggle.addEventListener('click', () => {
+      const open = navEl.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', open);
+    });
+    document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => {
+      navEl.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    }));
+  }
 </script>
 </body>
 </html>
